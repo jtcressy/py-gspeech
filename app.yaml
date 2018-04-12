@@ -7,6 +7,8 @@
 # using cloud.google.com/console use the "project id" for your application
 # id.
 api_version: 1
+beta_settings:
+  enable_app_engine_apis: true
 runtime: python-compat
 threadsafe: yes
 env: flex
