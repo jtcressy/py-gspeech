@@ -18,4 +18,4 @@ install:
   - pip install -r requirements.txt -t lib/
 
 script:
-  - pytest
+  - pytest -q test.py
