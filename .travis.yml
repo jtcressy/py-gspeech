@@ -3,17 +3,18 @@ language: python
 
 
 deploy:
-        provider: gae
-        keyfile: "jtcressy-c384e5039c0b.json"
-        project: "jtcressy"
-        default: true
-        on: master
+  provider: gae
+  keyfile: "jtcressy-c384e5039c0b.json"
+  project: "jtcressy"
+  default: true
+  on: master
 
 before_install:
-- openssl aes-256-cbc -K $encrypted_8713ba0e54f4_key -iv $encrypted_8713ba0e54f4_iv
-  -in jtcressy-c384e5039c0b.json.enc -out jtcressy-c384e5039c0b.json -d
+  - openssl aes-256-cbc -K $encrypted_8713ba0e54f4_key -iv $encrypted_8713ba0e54f4_iv
+    -in jtcressy-c384e5039c0b.json.enc -out jtcressy-c384e5039c0b.json -d
 
 install:
-- pip install -r requirements.txt -t lib/
+  - pip install -r requirements.txt -t lib/
 
-
+script:
+  - pytest
