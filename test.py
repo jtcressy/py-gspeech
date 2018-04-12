@@ -1,2 +1,10 @@
-def test_example():
-    assert (0 + 2) == (1 + 1)
+import main
+
+
+def test_index():
+    main.app.testing = True
+    client = main.app.test_client()
+
+    r = client.get('/')
+    assert r.status_code == 200
+    assert 'Hello World' in r.data.decode('utf-8')
