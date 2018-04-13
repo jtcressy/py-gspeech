@@ -10,7 +10,7 @@ def process(content, samplerate=16000):  # pass a file-like object to this
         sample_rate_hertz=int(samplerate),
         language_code='en-US'
     )
-    response = str(client.recognize(config, audio))
+    response = client.recognize(config, audio)
     return response
 
 

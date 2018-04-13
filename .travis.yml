@@ -19,4 +19,4 @@ install:
   - pip3 install -r requirements.txt
 
 script:
-  - python3 -m pytest -q test.py
+  - GOOGLE_APPLICATION_CREDENTIALS=jtcressy-c384e5039c0b.json python3 -m pytest -q test.py

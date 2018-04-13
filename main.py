@@ -12,9 +12,13 @@ def hello_world():
 
 @app.route('/transcribe', methods=['GET', 'POST'])
 def transcribe_audio():
+    import json
+    logger = logger_setup()
+    print("transcribe")
     if request.method == 'POST':
+        print("transcribe start")
         file = request.files['file']
-        samplerate = request.form['sampleRate']
+        samplerate = request.form.get('sampleRate', None)
         try:
             if samplerate:
                 result = gspeech.process(file.read(), samplerate)
@@ -22,7 +26,8 @@ def transcribe_audio():
                 result = gspeech.process(file.read())
         except Exception as e:
             result = str(e)
-        return result
+        logger.info("[POST]: file: {}; samplerate: {}; result: {}".format(file, samplerate, result))
+        return ''.join([''.join([y.transcript for y in x.alternatives]) for x in result.results])
     else:
         return render_template('transcribe.html')
 
