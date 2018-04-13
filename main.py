@@ -1,11 +1,57 @@
-from flask import Flask
+from flask import Flask, request, render_template
+import gspeech
+import sys, logging
+from os import environ
 app = Flask(__name__)
 
 
 @app.route('/')
 def hello_world():
-    return "Hello World"
+    return f"Hello World, {__name__}"
+
+
+@app.route('/transcribe', methods=['GET', 'POST'])
+def transcribe_audio():
+    if request.method == 'POST':
+        file = request.files['file']
+        samplerate = request.form['sampleRate']
+        try:
+            if samplerate:
+                result = gspeech.process(file.read(), samplerate)
+            else:
+                result = gspeech.process(file.read())
+        except Exception as e:
+            result = str(e)
+        return result
+    else:
+        return render_template('transcribe.html')
+
+
+def logger_setup(log_name="csbot", log_level=logging.INFO):
+    logger = logging.getLogger(log_name)
+    loghandler = logging.StreamHandler(stream=sys.stdout)
+    logfilehandler = logging.FileHandler(f"{log_name}.log", mode="a", encoding="utf-8")
+    formatter = logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s')
+    loghandler.setFormatter(formatter)
+    logfilehandler.setFormatter(formatter)
+    if len(logger.handlers) < 1:
+        logger.addHandler(loghandler)
+        logger.addHandler(logfilehandler)
+    loglevels = {
+        "CRITICAL": logging.CRITICAL,
+        "ERROR": logging.ERROR,
+        "WARNING": logging.WARNING,
+        "WARN": logging.WARN,
+        "INFO": logging.INFO,
+        "DEBUG": logging.DEBUG,
+    }
+    loglevel = loglevels.get(environ.get("LOGLEVEL", "INFO").upper(), log_level)
+    logger.setLevel(loglevel)
+    for handler in logger.handlers:
+        if isinstance(handler, logging.FileHandler):
+            logger.info(f"Logfile location: {handler.baseFilename}")
+    return logger
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0:8080')
+    app.run(port='8080')

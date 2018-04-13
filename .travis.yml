@@ -15,7 +15,7 @@ before_install:
     -in jtcressy-c384e5039c0b.json.enc -out jtcressy-c384e5039c0b.json -d
 
 install:
-  - pip install -r requirements.txt -t lib/ && pip install -r requirements.txt
+  - pip3 install -r requirements.txt
 
 script:
-  - python -m pytest -q test.py
+  - python3 -m pytest -q test.py
