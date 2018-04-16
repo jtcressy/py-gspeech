@@ -3,12 +3,12 @@ language: python
 python:
   - "3.6"
 
-deploy:
-  provider: gae
-  keyfile: "jtcressy-c384e5039c0b.json"
-  project: "jtcressy"
-  default: true
-  on: master
+#deploy:
+#  provider: gae
+#  keyfile: "jtcressy-c384e5039c0b.json"
+#  project: "jtcressy"
+#  default: true
+#  on: master
 
 before_install:
 
